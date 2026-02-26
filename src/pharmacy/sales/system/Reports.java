@@ -45,6 +45,11 @@ public class Reports extends javax.swing.JFrame {
         });
 
         jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("jButton3");
 
@@ -83,6 +88,7 @@ public class Reports extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -3, 650, 360));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -115,6 +121,36 @@ public class Reports extends javax.swing.JFrame {
 }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+    // 1. Database Connection
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    
+    // 2. Relative Path to the new jasper file
+    String reportPath = "src/reports/Fullinvoice.jasper"; 
+
+    // 3. Parameters (Empty Map)
+    java.util.Map<String, Object> parameters = new java.util.HashMap<>();
+    // parameters.put("logo_path", "src/images/logo.png"); // Uncomment if you add a logo
+
+    // 4. Fill the report
+    net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportPath, parameters, con);
+    
+    // 5. Display the report
+    if (jp.getPages().isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No data found for Stock Report.");
+    } else {
+        net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+    }
+
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Error generating Stock Report: " + e.getMessage());
+    e.printStackTrace();
+}
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
