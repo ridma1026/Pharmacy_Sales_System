@@ -183,12 +183,13 @@ String id_to_update = "";
     String number = txt_contact_number.getText();
     String address = txt_address.getText();
 
-    
+    // 1. Basic Validation: Check for empty fields
     if (name.isEmpty() || contact.isEmpty() || number.isEmpty() || address.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
         return;
     }
 
+    // 2. Data Type Validation: Check if phone number is numeric and correct length
     if (!number.matches("\\d{10}")) { // Adjust '10' based on your country's phone length
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid 10-digit phone number", "Input Error", 2);
         return;
@@ -207,19 +208,19 @@ String id_to_update = "";
         pst.executeUpdate();
         javax.swing.JOptionPane.showMessageDialog(this, "Supplier: " + name + " added successfully!");
         
+        // Clear fields and refresh table after success
         clearFields();
         loadSupplierTable(); 
         
     } catch (java.sql.SQLException e) {
-        if (e.getErrorCode() == 1062) { 
+        if (e.getErrorCode() == 1062) { // MySQL Duplicate entry error code
             javax.swing.JOptionPane.showMessageDialog(this, "This Supplier Name already exists!");
         } else {
             e.printStackTrace();
         }
-    }
         
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
     private void txt_contact_numberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contact_numberKeyTyped
         // TODO add your handling code here:
         
@@ -369,13 +370,13 @@ String id_to_update = "";
     txt_sup_name.requestFocus();
 }
     
-    public void loadSupplierTable() {
-String sql = "SELECT supplier_id, supplier_name, contact_person, tp_number, address FROM suppliers";
+    
+   public void loadSupplierTable() {
     try {
         java.sql.Connection con = pharmacy.sales.system.db.mycon();
         java.sql.Statement st = con.createStatement();
         java.sql.ResultSet rs = st.executeQuery("SELECT * FROM suppliers");
-        jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
+        jTable1.setModel(DbUtils.resultSetToTableModel(rs)); // Use rs2xml library
     } catch (Exception e) {
         e.printStackTrace();
     }

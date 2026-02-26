@@ -3,18 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pharmacy.sales.system;
-
 /**
  *
  * @author USER
  */
 public class Inventory extends javax.swing.JFrame {
+String product_id_to_update = ""; 
 
     /**
      * Creates new form Inventory
      */
     public Inventory() {
         initComponents();
+        product_load();
+        supplier_load();
     }
 
     /**
@@ -39,11 +41,11 @@ public class Inventory extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txt_p_name = new javax.swing.JTextField();
+        txt_p_barcode = new javax.swing.JTextField();
+        txt_p_qty = new javax.swing.JTextField();
+        txt_p_price = new javax.swing.JTextField();
+        com_p_supplier = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,25 +57,45 @@ public class Inventory extends javax.swing.JFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 350, 40));
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 490, -1, -1));
 
         jButton2.setText("Delete");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 490, -1, -1));
 
-        jButton3.setText("View");
+        jButton3.setText("Update");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 490, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Product Id", "Product Name", "Bar Code", "Quantity", "Supplier Id"
+                "Product Id", "Product Name", "Bar Code", "Price", "Quantity", "Supplier Id"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, 520, 350));
@@ -116,14 +138,18 @@ public class Inventory extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(68, 68, 68))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_p_name, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_p_barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_p_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_p_price, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(68, 68, 68))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(com_p_supplier, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,24 +157,24 @@ public class Inventory extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_p_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_p_barcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_p_qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addContainerGap(62, Short.MAX_VALUE))
+                    .addComponent(txt_p_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(com_p_supplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 320, 350));
@@ -165,6 +191,144 @@ public class Inventory extends javax.swing.JFrame {
         // TODO add your handling code here:
         new Dashboard().setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        String name = txt_p_name.getText();
+String barcode = txt_p_barcode.getText();
+String price = txt_p_price.getText();
+String qty = txt_p_qty.getText();
+String sid = com_p_supplier.getSelectedItem().toString(); // Direct ID
+
+if (name.isEmpty() || barcode.isEmpty() || price.isEmpty() || qty.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
+    return;
+}
+
+try {
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    String sql = "INSERT INTO products (product_name, bar_code, price, qty, supplier_id) VALUES (?,?,?,?,?)";
+    java.sql.PreparedStatement pst = con.prepareStatement(sql);
+    
+    pst.setString(1, name);
+    pst.setString(2, barcode);
+    pst.setString(3, price);
+    pst.setString(4, qty);
+    pst.setString(5, sid);
+    
+    pst.executeUpdate();
+    javax.swing.JOptionPane.showMessageDialog(this, "Product: " + name + " added successfully!");
+    
+    clearFields();
+    product_load(); 
+    
+} catch (java.sql.SQLException e) {
+    if (e.getErrorCode() == 1062) { 
+        javax.swing.JOptionPane.showMessageDialog(this, "This Barcode already exists!");
+    } else {
+        e.printStackTrace();
+    }
+}        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+       
+        try {
+        int r = jTable1.getSelectedRow();
+        
+        // 1. Get Product ID for update/delete
+        product_id_to_update = jTable1.getValueAt(r, 0).toString();
+        
+        // 2. Load Text Fields
+        txt_p_name.setText(jTable1.getValueAt(r, 1).toString());
+        txt_p_barcode.setText(jTable1.getValueAt(r, 2).toString());
+        txt_p_price.setText(jTable1.getValueAt(r, 3).toString());
+        txt_p_qty.setText(jTable1.getValueAt(r, 4).toString());
+        
+        // 3. Load Supplier ID to ComboBox
+        // We get the ID from Column 5
+        String table_sid = jTable1.getValueAt(r, 5).toString(); 
+
+        // Force the ComboBox to select this ID
+        com_p_supplier.setSelectedItem(table_sid);
+        
+        // If setSelectedItem still fails, use this fallback:
+        for (int i = 0; i < com_p_supplier.getItemCount(); i++) {
+            if (com_p_supplier.getItemAt(i).toString().equals(table_sid)) {
+                com_p_supplier.setSelectedIndex(i);
+                break;
+            }
+        }
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+String name = txt_p_name.getText();
+String barcode = txt_p_barcode.getText();
+String price = txt_p_price.getText();
+String qty = txt_p_qty.getText();
+String sid = com_p_supplier.getSelectedItem().toString();
+
+if (product_id_to_update.equals("")) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table!");
+    return;
+}
+
+try {
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    String sql = "UPDATE products SET product_name=?, bar_code=?, price=?, qty=?, supplier_id=? WHERE product_id=?";
+    java.sql.PreparedStatement pst = con.prepareStatement(sql);
+    
+    pst.setString(1, name);
+    pst.setString(2, barcode);
+    pst.setString(3, price);
+    pst.setString(4, qty);
+    pst.setString(5, sid);
+    pst.setString(6, product_id_to_update);
+    
+    pst.executeUpdate();
+    javax.swing.JOptionPane.showMessageDialog(this, "Product updated!");
+    
+    clearFields();
+    product_load(); 
+    product_id_to_update = "";
+    
+} catch (Exception e) {
+    e.printStackTrace();
+}        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+if (product_id_to_update.equals("")) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please select a product from the table!");
+    return;
+}
+
+int opt = javax.swing.JOptionPane.showConfirmDialog(this, "Delete this product?", "Confirm", 0);
+if (opt == 0) {
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        String sql = "DELETE FROM products WHERE product_id = ?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        pst.setString(1, product_id_to_update);
+        pst.executeUpdate();
+        
+        javax.swing.JOptionPane.showMessageDialog(this, "Deleted!");
+        clearFields();
+        product_load();
+        product_id_to_update = "";
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,8 +364,75 @@ public class Inventory extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+
+ public void product_load() {
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        // Select exactly what we need
+        String sql = "SELECT product_id, product_name, bar_code, price, qty, supplier_id FROM products";
+        
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        java.sql.ResultSet rs = pst.executeQuery();
+        
+        javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        dt.setRowCount(0); 
+        
+        while (rs.next()) {
+            java.util.Vector v = new java.util.Vector();
+            v.add(rs.getString("product_id"));    // Col 0
+            v.add(rs.getString("product_name"));  // Col 1
+            v.add(rs.getString("bar_code"));      // Col 2
+            v.add(rs.getString("price"));         // Col 3
+            v.add(rs.getString("qty"));           // Col 4
+            v.add(rs.getString("supplier_id"));   // Col 5 - This must be the ID
+            
+            dt.addRow(v);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+ 
+ private void clearFields()
+ {
+    txt_p_name.setText("");
+txt_p_barcode.setText("");
+txt_p_price.setText("");
+txt_p_qty.setText("");
+
+if (com_p_supplier.getItemCount() > 0) {
+    com_p_supplier.setSelectedIndex(0);
+}
+
+txt_p_name.requestFocus();
+ }
+      
+      
+ 
+ public void supplier_load() {
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        java.sql.Statement s = con.createStatement();
+        java.sql.ResultSet rs = s.executeQuery("SELECT supplier_id FROM suppliers");
+        
+        com_p_supplier.removeAllItems();
+        
+        while (rs.next()) {
+            // Add only the ID
+            com_p_supplier.addItem(rs.getString("supplier_id"));
+        }
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Supplier Load Error: " + e.getMessage());
+    }
+}
+  
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> com_p_supplier;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -216,10 +447,9 @@ public class Inventory extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField txt_p_barcode;
+    private javax.swing.JTextField txt_p_name;
+    private javax.swing.JTextField txt_p_price;
+    private javax.swing.JTextField txt_p_qty;
     // End of variables declaration//GEN-END:variables
 }
