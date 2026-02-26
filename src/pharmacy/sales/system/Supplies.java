@@ -73,6 +73,11 @@ String id_to_update = "";
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 500, -1, -1));
 
         jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -282,6 +287,44 @@ String id_to_update = "";
     txt_contact_number.setText(jTable1.getValueAt(r, 3).toString()); // Phone
     txt_address.setText(jTable1.getValueAt(r, 4).toString());        // Address
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        // 1. Check if a supplier is actually selected
+    if (id_to_update.equals("")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a supplier from the table first!");
+        return;
+    }
+
+    // 2. Ask for Confirmation
+    int dialogResult = javax.swing.JOptionPane.showConfirmDialog(null, 
+            "Are you sure you want to delete this supplier?", "Warning", 
+            javax.swing.JOptionPane.YES_NO_OPTION);
+
+    if (dialogResult == javax.swing.JOptionPane.YES_OPTION) {
+        try {
+            java.sql.Connection con = pharmacy.sales.system.db.mycon();
+            
+            // Prepare the Delete Statement
+            String sql = "DELETE FROM suppliers WHERE supplier_id=?";
+            java.sql.PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, id_to_update);
+
+            // Execute
+            pst.executeUpdate();
+            javax.swing.JOptionPane.showMessageDialog(this, "Supplier Deleted Successfully!");
+
+            // 3. Refresh and Clean up
+            loadSupplierTable(); // Refresh your JTable
+            clearFields();       // Clear the text boxes
+            id_to_update = "";   // Reset the selection ID
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Delete Error: " + e.getMessage());
+        }
+    }
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
