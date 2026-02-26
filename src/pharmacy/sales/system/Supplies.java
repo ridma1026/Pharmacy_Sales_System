@@ -9,7 +9,7 @@ import net.proteanit.sql.DbUtils;
  * @author USER
  */
 public class Supplies extends javax.swing.JFrame {
-
+String id_to_update = "";
     /**
      * Creates new form Supplies
      */
@@ -64,7 +64,7 @@ public class Supplies extends javax.swing.JFrame {
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 500, -1, -1));
 
-        jButton3.setText("Upadte");
+        jButton3.setText("Update");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -86,6 +86,11 @@ public class Supplies extends javax.swing.JFrame {
                 "Supplier Id", "Supplier Name", "Contact Person", "Contact Number", "Address"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 490, 330));
@@ -229,8 +234,54 @@ public class Supplies extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (id_to_update.equals("")) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a supplier from the table first!");
+        return;
+    }
+
+    String name = txt_sup_name.getText();
+    String person = txt_contact_person.getText(); // Now active
+    String tp = txt_contact_number.getText();
+    String addr = txt_address.getText();
+
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        
+        // Updated SQL to include contact_person
+        String sql = "UPDATE suppliers SET supplier_name=?, contact_person=?, tp_number=?, address=? WHERE supplier_id=?";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        
+        pst.setString(1, name);
+        pst.setString(2, person); // Now active
+        pst.setString(3, tp);
+        pst.setString(4, addr);
+        pst.setString(5, id_to_update); 
+
+        pst.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(this, "Supplier Updated Successfully!");
+
+        loadSupplierTable(); 
+        clearFields();   
+        id_to_update = ""; 
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Update Error: " + e.getMessage());
+    }
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+      int r = jTable1.getSelectedRow(); 
+    
+    id_to_update = jTable1.getValueAt(r, 0).toString(); 
+    
+    // Mapping columns to text fields (Check your table column order!)
+    txt_sup_name.setText(jTable1.getValueAt(r, 1).toString());      // Name
+    txt_contact_person.setText(jTable1.getValueAt(r, 2).toString()); // Contact Person <--- Added
+    txt_contact_number.setText(jTable1.getValueAt(r, 3).toString()); // Phone
+    txt_address.setText(jTable1.getValueAt(r, 4).toString());        // Address
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -276,6 +327,7 @@ public class Supplies extends javax.swing.JFrame {
 }
     
     public void loadSupplierTable() {
+String sql = "SELECT supplier_id, supplier_name, contact_person, tp_number, address FROM suppliers";
     try {
         java.sql.Connection con = pharmacy.sales.system.db.mycon();
         java.sql.Statement st = con.createStatement();
