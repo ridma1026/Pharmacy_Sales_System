@@ -198,7 +198,7 @@ String product_id_to_update = "";
 String barcode = txt_p_barcode.getText();
 String price = txt_p_price.getText();
 String qty = txt_p_qty.getText();
-String sid = com_p_supplier.getSelectedItem().toString(); // Direct ID
+String sid = com_p_supplier.getSelectedItem().toString(); 
 
 if (name.isEmpty() || barcode.isEmpty() || price.isEmpty() || qty.isEmpty()) {
     javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
@@ -220,6 +220,7 @@ try {
     javax.swing.JOptionPane.showMessageDialog(this, "Product: " + name + " added successfully!");
     
     clearFields();
+    
     product_load(); 
     
 } catch (java.sql.SQLException e) {
@@ -237,16 +238,13 @@ try {
         try {
         int r = jTable1.getSelectedRow();
         
-        // 1. Get Product ID for update/delete
         product_id_to_update = jTable1.getValueAt(r, 0).toString();
         
-        // 2. Load Text Fields
         txt_p_name.setText(jTable1.getValueAt(r, 1).toString());
         txt_p_barcode.setText(jTable1.getValueAt(r, 2).toString());
         txt_p_price.setText(jTable1.getValueAt(r, 3).toString());
         txt_p_qty.setText(jTable1.getValueAt(r, 4).toString());
         
-        // 3. Load Supplier ID to ComboBox
         // We get the ID from Column 5
         String table_sid = jTable1.getValueAt(r, 5).toString(); 
 
