@@ -37,7 +37,12 @@ public class Reports extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 102, 102));
 
-        jButton1.setText("jButton1");
+        jButton1.setText(" Top Selling Product Suppliers");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("jButton2");
 
@@ -51,24 +56,23 @@ public class Reports extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(89, 89, 89)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(97, 97, 97)
-                        .addComponent(jButton2)
-                        .addGap(119, 119, 119))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93)))
+                .addComponent(jButton1)
+                .addGap(97, 97, 97)
+                .addComponent(jButton2)
+                .addGap(119, 119, 119)
                 .addComponent(jButton3)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(267, 267, 267))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(61, 61, 61)
+                .addGap(62, 62, 62)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
@@ -80,6 +84,38 @@ public class Reports extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        try {
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    
+    // Ensure the connection is targeting the correct database
+    con.setCatalog("pharmacy_posdb"); 
+
+    // Use absolute path to ensure NetBeans isn't looking at an old version
+    java.io.File f = new java.io.File("src/reports/top_selling.jasper");
+    String reportPath = f.getAbsolutePath();
+
+    java.util.Map<String, Object> parameters = new java.util.HashMap<>();
+    parameters.put("logo_path", "C:\\Users\\USER\\Desktop\\NIBM\\DSE233\\Riya EAD Cw\\Pharmacy Sales System\\src\\images\\logo.png");
+
+    // Fill the report
+    net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportPath, parameters, con);
+    
+    if (jp.getPages().isEmpty()) {
+        // If it still says 0 pages, the connection is active but seeing an empty table
+        javax.swing.JOptionPane.showMessageDialog(this, "No data found. Please ensure you have clicked 'Apply' or 'Commit' in your Database tool.");
+    } else {
+        net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+    }
+
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Report Error: " + e.getMessage());
+    e.printStackTrace();
+}
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
