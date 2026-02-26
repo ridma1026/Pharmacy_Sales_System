@@ -20,7 +20,17 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         // 1. Get the image from your src folder
 ImageIcon myImage = new ImageIcon(getClass().getResource("/images/logo.jpeg"));
-
+// This is the line causing the crash
+try {
+    java.net.URL imgURL = getClass().getResource("/images/logo.png"); 
+    if (imgURL != null) {
+        this.setIconImage(new javax.swing.ImageIcon(imgURL).getImage());
+    } else {
+        System.out.println("Logo image not found at the specified path!");
+    }
+} catch (Exception e) {
+    // This prevents the crash
+}
 // 2. Scale the image to fit your JLabel (e.g., lbl_logo)
 Image img1 = myImage.getImage();
 Image img2 = img1.getScaledInstance(lbl_logo.getWidth(), lbl_logo.getHeight(), Image.SCALE_SMOOTH);
@@ -43,6 +53,10 @@ lbl_logo.setIcon(scaledIcon);
         lbl_logo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        txt_username = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        txt_password = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
 
         jLabel2.setText("jLabel2");
@@ -52,17 +66,72 @@ lbl_logo.setIcon(scaledIcon);
 
         lbl_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pharmacy/sales/system/logo.jpeg"))); // NOI18N
         lbl_logo.setText("jLabel4");
-        getContentPane().add(lbl_logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 110, 110));
+        getContentPane().add(lbl_logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 110, 110));
 
-        jLabel1.setText("jLabel1");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, -1, -1));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("UserName");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, -1, 20));
 
-        jLabel4.setText("jLabel4");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 280, -1, -1));
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Password");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
+
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, -1, -1));
+        getContentPane().add(txt_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, 80, -1));
+
+        jButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jButton2.setText("Clear");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, -1, -1));
+
+        txt_password.setText("jPasswordField1");
+        getContentPane().add(txt_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 280, -1, -1));
+
+        jLabel3.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel3.setOpaque(true);
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 490));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+    // Calling the connection class directly
+    java.sql.Connection con =  pharmacy.sales.system.db.mycon(); 
+    
+    if (con == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Check your Database Connection!");
+        return;
+    }
+
+    String sql = "SELECT * FROM users WHERE username=? AND password=?";
+    java.sql.PreparedStatement pst = con.prepareStatement(sql);
+    
+    pst.setString(1, txt_username.getText());
+    pst.setString(2, String.valueOf(txt_password.getPassword()));
+    
+    java.sql.ResultSet rs = pst.executeQuery();
+    
+    if (rs.next()) {
+        new Dashboard().setVisible(true);
+        this.dispose();
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Incorrect Username or Password");
+    }
+
+} catch (Exception e) {
+    e.printStackTrace();
+}
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -100,10 +169,14 @@ lbl_logo.setIcon(scaledIcon);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lbl_logo;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
