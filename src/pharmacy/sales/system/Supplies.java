@@ -65,6 +65,11 @@ public class Supplies extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 500, -1, -1));
 
         jButton3.setText("Upadte");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 500, -1, -1));
 
         jButton4.setText("Delete");
@@ -167,13 +172,12 @@ public class Supplies extends javax.swing.JFrame {
     String number = txt_contact_number.getText();
     String address = txt_address.getText();
 
-    // 1. Basic Validation: Check for empty fields
+    
     if (name.isEmpty() || contact.isEmpty() || number.isEmpty() || address.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
         return;
     }
 
-    // 2. Data Type Validation: Check if phone number is numeric and correct length
     if (!number.matches("\\d{10}")) { // Adjust '10' based on your country's phone length
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid 10-digit phone number", "Input Error", 2);
         return;
@@ -192,12 +196,11 @@ public class Supplies extends javax.swing.JFrame {
         pst.executeUpdate();
         javax.swing.JOptionPane.showMessageDialog(this, "Supplier: " + name + " added successfully!");
         
-        // Clear fields and refresh table after success
         clearFields();
         loadSupplierTable(); 
         
     } catch (java.sql.SQLException e) {
-        if (e.getErrorCode() == 1062) { // MySQL Duplicate entry error code
+        if (e.getErrorCode() == 1062) { 
             javax.swing.JOptionPane.showMessageDialog(this, "This Supplier Name already exists!");
         } else {
             e.printStackTrace();
@@ -222,6 +225,11 @@ public class Supplies extends javax.swing.JFrame {
     }
         
     }//GEN-LAST:event_txt_contact_numberKeyTyped
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,7 +279,7 @@ public class Supplies extends javax.swing.JFrame {
         java.sql.Connection con = pharmacy.sales.system.db.mycon();
         java.sql.Statement st = con.createStatement();
         java.sql.ResultSet rs = st.executeQuery("SELECT * FROM suppliers");
-        jTable1.setModel(DbUtils.resultSetToTableModel(rs)); // Use rs2xml library
+        jTable1.setModel(DbUtils.resultSetToTableModel(rs)); 
     } catch (Exception e) {
         e.printStackTrace();
     }
