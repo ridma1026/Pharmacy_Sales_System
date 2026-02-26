@@ -77,6 +77,11 @@ public class Dashboard extends javax.swing.JFrame {
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(605, 443, 180, 50));
 
         jButton5.setText("LogOut");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 204, 204));
@@ -101,6 +106,11 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         new Supplies().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        this.dispose(); // Close dashboard on logout
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
