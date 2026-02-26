@@ -183,13 +183,11 @@ String id_to_update = "";
     String number = txt_contact_number.getText();
     String address = txt_address.getText();
 
-    // 1. Basic Validation: Check for empty fields
     if (name.isEmpty() || contact.isEmpty() || number.isEmpty() || address.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
         return;
     }
 
-    // 2. Data Type Validation: Check if phone number is numeric and correct length
     if (!number.matches("\\d{10}")) { // Adjust '10' based on your country's phone length
         javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid 10-digit phone number", "Input Error", 2);
         return;

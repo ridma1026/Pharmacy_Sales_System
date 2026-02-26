@@ -45,6 +45,7 @@ Double balance = 0.0;
         lbl_p_id = new javax.swing.JLabel();
         lbl_p_name = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,6 +71,12 @@ Double balance = 0.0;
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Quantity");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
+
+        txt_qty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_qtyKeyTyped(evt);
+            }
+        });
         getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 80, -1));
 
         txt_barcode_search.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +117,9 @@ Double balance = 0.0;
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_paid_amountKeyReleased(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_paid_amountKeyTyped(evt);
+            }
         });
         getContentPane().add(txt_paid_amount, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 480, 80, -1));
 
@@ -136,6 +146,14 @@ Double balance = 0.0;
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 480, -1, -1));
+
+        jButton4.setText("Dashboard");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setOpaque(true);
@@ -238,7 +256,6 @@ try {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
 try {
-    // 1. Check if the table is empty before starting
     if (jTable1.getRowCount() == 0) {
         javax.swing.JOptionPane.showMessageDialog(this, "Please add products to the cart first!");
         return;
@@ -246,7 +263,6 @@ try {
 
     java.sql.Connection con = pharmacy.sales.system.db.mycon();
     
-    // 2. Insert into 'sales' table
     String sqlSales = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
     java.sql.PreparedStatement pst = con.prepareStatement(sqlSales, java.sql.Statement.RETURN_GENERATED_KEYS);
     
@@ -261,7 +277,6 @@ try {
         last_id = rs.getInt(1);
     }
 
-    // 3. Insert into 'sales_details' table
     String sqlDetails = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
     java.sql.PreparedStatement pstDetails = con.prepareStatement(sqlDetails);
 
@@ -302,6 +317,33 @@ try {
     e.printStackTrace();
 }        
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        new Dashboard().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txt_paid_amountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_paid_amountKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+// Check if the character is NOT a digit
+if (!Character.isDigit(c)) {
+    // This consumes the event so the character is not typed into the field
+    evt.consume(); 
+}
+    }//GEN-LAST:event_txt_paid_amountKeyTyped
+
+    private void txt_qtyKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_qtyKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+// Check if the character is NOT a digit
+if (!Character.isDigit(c)) {
+    evt.consume(); 
+}
+    }//GEN-LAST:event_txt_qtyKeyTyped
 
     /**
      * @param args the command line arguments
@@ -358,6 +400,7 @@ try {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

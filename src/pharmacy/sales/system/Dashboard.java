@@ -183,7 +183,6 @@ public class Dashboard extends javax.swing.JFrame {
         
         // Get Today's Sales
         String sql2 = "SELECT SUM(total_bill) FROM sales WHERE Date(sale_date) = CURDATE()";
-        // Note: Ensure you have a 'sale_date' column in your 'sales' table!
         
     } catch (Exception e) {
         e.printStackTrace();

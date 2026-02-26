@@ -126,6 +126,17 @@ String product_id_to_update = "";
         jLabel7.setForeground(new java.awt.Color(255, 102, 102));
         jLabel7.setText("Suppolier Id");
 
+        txt_p_price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_p_priceActionPerformed(evt);
+            }
+        });
+        txt_p_price.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_p_priceKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -245,7 +256,6 @@ try {
         txt_p_price.setText(jTable1.getValueAt(r, 3).toString());
         txt_p_qty.setText(jTable1.getValueAt(r, 4).toString());
         
-        // We get the ID from Column 5
         String table_sid = jTable1.getValueAt(r, 5).toString(); 
 
         // Force the ComboBox to select this ID
@@ -327,6 +337,21 @@ if (opt == 0) {
     }
 }        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txt_p_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_p_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_p_priceActionPerformed
+
+    private void txt_p_priceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_p_priceKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+// Check if the character is NOT a digit
+if (!Character.isDigit(c)) {
+    // This consumes the event so the character is not typed into the field
+    evt.consume(); 
+}
+    }//GEN-LAST:event_txt_p_priceKeyTyped
 
     /**
      * @param args the command line arguments
