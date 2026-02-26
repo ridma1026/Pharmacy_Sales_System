@@ -44,6 +44,7 @@ Double balance = 0.0;
         lbl_p_price = new javax.swing.JLabel();
         lbl_p_id = new javax.swing.JLabel();
         lbl_p_name = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -51,7 +52,7 @@ Double balance = 0.0;
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(204, 0, 51));
-        jLabel2.setText("New Bill");
+        jLabel2.setText("New Sale");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, -1, -1));
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -127,6 +128,14 @@ Double balance = 0.0;
         lbl_p_name.setForeground(new java.awt.Color(0, 0, 0));
         lbl_p_name.setText("Price");
         getContentPane().add(lbl_p_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, -1, -1));
+
+        jButton3.setText("Make Sale");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 480, -1, -1));
 
         jLabel1.setBackground(new java.awt.Color(255, 153, 153));
         jLabel1.setOpaque(true);
@@ -226,6 +235,74 @@ try {
 }
     }//GEN-LAST:event_txt_paid_amountKeyReleased
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+try {
+    // 1. Check if the table is empty before starting
+    if (jTable1.getRowCount() == 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Please add products to the cart first!");
+        return;
+    }
+
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    
+    // 2. Insert into 'sales' table
+    String sqlSales = "INSERT INTO sales (total_bill, pay_amount, balance) VALUES (?,?,?)";
+    java.sql.PreparedStatement pst = con.prepareStatement(sqlSales, java.sql.Statement.RETURN_GENERATED_KEYS);
+    
+    pst.setString(1, lbl_grand_total.getText());
+    pst.setString(2, txt_paid_amount.getText());
+    pst.setString(3, lbl_balance.getText());
+    pst.executeUpdate();
+    
+    java.sql.ResultSet rs = pst.getGeneratedKeys();
+    int last_id = 0;
+    if (rs.next()) {
+        last_id = rs.getInt(1);
+    }
+
+    // 3. Insert into 'sales_details' table
+    String sqlDetails = "INSERT INTO sales_details (sale_id, product_id, product_name, qty, price, total_price) VALUES (?,?,?,?,?,?)";
+    java.sql.PreparedStatement pstDetails = con.prepareStatement(sqlDetails);
+
+    for (int i = 0; i < jTable1.getRowCount(); i++) {
+        // SAFE CHECK: Check each cell before calling toString()
+        Object idObj = jTable1.getValueAt(i, 0);
+        Object nameObj = jTable1.getValueAt(i, 1);
+        Object priceObj = jTable1.getValueAt(i, 2);
+        Object qtyObj = jTable1.getValueAt(i, 3);
+        Object totalObj = jTable1.getValueAt(i, 4);
+
+        if (idObj == null || nameObj == null) {
+            continue; // Skip this row if it's empty to avoid the error
+        }
+
+        pstDetails.setInt(1, last_id);
+        pstDetails.setString(2, idObj.toString());    // product_id
+        pstDetails.setString(3, nameObj.toString());  // product_name
+        pstDetails.setString(4, qtyObj.toString());   // qty
+        pstDetails.setString(5, priceObj.toString()); // price
+        pstDetails.setString(6, totalObj.toString()); // total_price
+        
+        pstDetails.addBatch();
+    }
+    
+    pstDetails.executeBatch();
+    javax.swing.JOptionPane.showMessageDialog(this, "Sale Completed! Invoice ID: " + last_id);
+    
+    // Clear Table and Fields after success
+    javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    dt.setRowCount(0);
+    lbl_grand_total.setText("0.00");
+    lbl_balance.setText("0.00");
+    txt_paid_amount.setText("");
+
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    e.printStackTrace();
+}        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -280,6 +357,7 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
