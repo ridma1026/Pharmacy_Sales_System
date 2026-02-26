@@ -18,9 +18,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        // 1. Get the image from your src folder
 ImageIcon myImage = new ImageIcon(getClass().getResource("/images/logo.jpeg"));
-// This is the line causing the crash
 try {
     java.net.URL imgURL = getClass().getResource("/images/logo.png"); 
     if (imgURL != null) {
@@ -29,13 +27,10 @@ try {
         System.out.println("Logo image not found at the specified path!");
     }
 } catch (Exception e) {
-    // This prevents the crash
 }
-// 2. Scale the image to fit your JLabel (e.g., lbl_logo)
 Image img1 = myImage.getImage();
 Image img2 = img1.getScaledInstance(lbl_logo.getWidth(), lbl_logo.getHeight(), Image.SCALE_SMOOTH);
 
-// 3. Set the scaled image back to the label
 ImageIcon scaledIcon = new ImageIcon(img2);
 lbl_logo.setIcon(scaledIcon);
     }
@@ -88,6 +83,11 @@ lbl_logo.setIcon(scaledIcon);
 
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, -1, -1));
 
         txt_password.setText("jPasswordField1");
@@ -132,6 +132,17 @@ lbl_logo.setIcon(scaledIcon);
 }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        // Clear the username field
+    txt_username.setText("");
+    
+    // Clear the password field
+    txt_password.setText("");
+    
+    txt_username.requestFocus();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
