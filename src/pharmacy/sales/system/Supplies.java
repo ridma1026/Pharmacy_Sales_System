@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pharmacy.sales.system;
-
+import net.proteanit.sql.DbUtils;
 /**
  *
  * @author USER
@@ -15,6 +15,7 @@ public class Supplies extends javax.swing.JFrame {
      */
     public Supplies() {
         initComponents();
+        loadSupplierTable();
     }
 
     /**
@@ -26,21 +27,201 @@ public class Supplies extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        txt_sup_name = new javax.swing.JTextField();
+        txt_contact_person = new javax.swing.JTextField();
+        txt_contact_number = new javax.swing.JTextField();
+        txt_address = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton1.setText("Dashboard");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 100, 40));
+
+        jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 500, -1, -1));
+
+        jButton3.setText("Upadte");
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 500, -1, -1));
+
+        jButton4.setText("Delete");
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Supplier Id", "Supplier Name", "Contact Person", "Contact Number", "Address"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 490, 330));
+
+        txt_contact_number.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_contact_numberKeyTyped(evt);
+            }
+        });
+
+        jLabel2.setText("Supplier Name");
+
+        jLabel3.setText("Contact Person");
+
+        jLabel4.setText("Contact Number");
+
+        jLabel5.setText("Address");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_sup_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_address, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_contact_number, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_contact_person, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_sup_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_contact_person, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(48, 48, 48)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_contact_number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(42, 42, 42))
         );
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 320, 330));
+
+        jLabel6.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel6.setText("Supply Managemnet");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 40, 130, 20));
+
+        jLabel1.setBackground(new java.awt.Color(0, 153, 153));
+        jLabel1.setOpaque(true);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 2, 950, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+                new Dashboard().setVisible(true);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+        String name = txt_sup_name.getText();
+    String contact = txt_contact_person.getText();
+    String number = txt_contact_number.getText();
+    String address = txt_address.getText();
+
+    // 1. Basic Validation: Check for empty fields
+    if (name.isEmpty() || contact.isEmpty() || number.isEmpty() || address.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "All fields are required!", "Validation Error", 2);
+        return;
+    }
+
+    // 2. Data Type Validation: Check if phone number is numeric and correct length
+    if (!number.matches("\\d{10}")) { // Adjust '10' based on your country's phone length
+        javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid 10-digit phone number", "Input Error", 2);
+        return;
+    }
+
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        String sql = "INSERT INTO suppliers (supplier_name, contact_person, tp_number, address) VALUES (?,?,?,?)";
+        java.sql.PreparedStatement pst = con.prepareStatement(sql);
+        
+        pst.setString(1, name);
+        pst.setString(2, contact);
+        pst.setString(3, number);
+        pst.setString(4, address);
+        
+        pst.executeUpdate();
+        javax.swing.JOptionPane.showMessageDialog(this, "Supplier: " + name + " added successfully!");
+        
+        // Clear fields and refresh table after success
+        clearFields();
+        loadSupplierTable(); 
+        
+    } catch (java.sql.SQLException e) {
+        if (e.getErrorCode() == 1062) { // MySQL Duplicate entry error code
+            javax.swing.JOptionPane.showMessageDialog(this, "This Supplier Name already exists!");
+        } else {
+            e.printStackTrace();
+        }
+    }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txt_contact_numberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contact_numberKeyTyped
+        // TODO add your handling code here:
+        
+        char c = evt.getKeyChar();
+    
+    // 1. Only allow numbers (0-9)
+    if (!Character.isDigit(c)) {
+        evt.consume(); // Ignore the key press if it's not a number
+    }
+    
+    // 2. Limit length to 10 digits
+    if (txt_contact_number.getText().length() >= 10) {
+        evt.consume(); // Ignore the key press if already 10 digits
+    }
+        
+    }//GEN-LAST:event_txt_contact_numberKeyTyped
 
     /**
      * @param args the command line arguments
@@ -76,7 +257,43 @@ public class Supplies extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void clearFields() {
+    txt_sup_name.setText("");
+    txt_contact_person.setText("");
+    txt_contact_number.setText("");
+    txt_address.setText("");
+    txt_sup_name.requestFocus();
+}
+    
+    public void loadSupplierTable() {
+    try {
+        java.sql.Connection con = pharmacy.sales.system.db.mycon();
+        java.sql.Statement st = con.createStatement();
+        java.sql.ResultSet rs = st.executeQuery("SELECT * FROM suppliers");
+        jTable1.setModel(DbUtils.resultSetToTableModel(rs)); // Use rs2xml library
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txt_address;
+    private javax.swing.JTextField txt_contact_number;
+    private javax.swing.JTextField txt_contact_person;
+    private javax.swing.JTextField txt_sup_name;
     // End of variables declaration//GEN-END:variables
 }
