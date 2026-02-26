@@ -190,14 +190,12 @@ try {
         // TODO add your handling code here:
         
         try {
-    // Get data from your labels/fields
     String id = lbl_p_id.getText();
     String name = lbl_p_name.getText();
     Double price = Double.valueOf(lbl_p_price.getText());
     Double qty = Double.valueOf(txt_qty.getText());
     Double total = price * qty;
 
-    // Get the table model
     javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
     
     // Add row: Product Name, Price, Qty, Total

@@ -90,7 +90,6 @@ public class Reports extends javax.swing.JFrame {
         try {
     java.sql.Connection con = pharmacy.sales.system.db.mycon();
     
-    // Ensure the connection is targeting the correct database
     con.setCatalog("pharmacy_posdb"); 
 
     // Use absolute path to ensure NetBeans isn't looking at an old version
@@ -105,7 +104,7 @@ public class Reports extends javax.swing.JFrame {
     
     if (jp.getPages().isEmpty()) {
         // If it still says 0 pages, the connection is active but seeing an empty table
-        javax.swing.JOptionPane.showMessageDialog(this, "No data found. Please ensure you have clicked 'Apply' or 'Commit' in your Database tool.");
+        javax.swing.JOptionPane.showMessageDialog(this, "No data found.");
     } else {
         net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
     }
