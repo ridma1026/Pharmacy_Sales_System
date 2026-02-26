@@ -9,12 +9,15 @@ package pharmacy.sales.system;
  * @author USER
  */
 public class POS extends javax.swing.JFrame {
-
+Double total_bill = 0.0;
+Double balance = 0.0;
     /**
      * Creates new form POS
      */
     public POS() {
         initComponents();
+        calculate_grand_total();
+        
     }
 
     /**
@@ -26,21 +29,202 @@ public class POS extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txt_qty = new javax.swing.JTextField();
+        txt_barcode_search = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        lbl_grand_total = new javax.swing.JLabel();
+        txt_paid_amount = new javax.swing.JTextField();
+        lbl_balance = new javax.swing.JLabel();
+        lbl_p_price = new javax.swing.JLabel();
+        lbl_p_id = new javax.swing.JLabel();
+        lbl_p_name = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 892, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 553, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(204, 0, 51));
+        jLabel2.setText("New Bill");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 20, -1, -1));
+
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Product");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 50, 20));
+
+        jButton1.setText("Add to Cart");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 110, -1, -1));
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Quantity");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, -1, -1));
+        getContentPane().add(txt_qty, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 80, -1));
+
+        txt_barcode_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_barcode_searchActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txt_barcode_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 80, -1));
+
+        jButton2.setText("Delete");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 110, -1, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Product Id", "Product Name", "price", "Qty", "Total"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 540, 290));
+
+        lbl_grand_total.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_grand_total.setText("Toatl");
+        getContentPane().add(lbl_grand_total, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 480, -1, -1));
+
+        txt_paid_amount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_paid_amountKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txt_paid_amount, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 480, 80, -1));
+
+        lbl_balance.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_balance.setText("Balance");
+        getContentPane().add(lbl_balance, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 480, -1, 20));
+
+        lbl_p_price.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_p_price.setText("Product Name");
+        getContentPane().add(lbl_p_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, -1, -1));
+
+        lbl_p_id.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_p_id.setText("Id");
+        getContentPane().add(lbl_p_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, -1, -1));
+
+        lbl_p_name.setForeground(new java.awt.Color(0, 0, 0));
+        lbl_p_name.setText("Price");
+        getContentPane().add(lbl_p_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, -1, -1));
+
+        jLabel1.setBackground(new java.awt.Color(255, 153, 153));
+        jLabel1.setOpaque(true);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 560));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txt_barcode_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_barcode_searchActionPerformed
+        // TODO add your handling code here:
+        String barcode = txt_barcode_search.getText();
+
+try {
+    java.sql.Connection con = pharmacy.sales.system.db.mycon();
+    java.sql.Statement s = con.createStatement();
+    java.sql.ResultSet rs = s.executeQuery("SELECT * FROM products WHERE bar_code = '" + barcode + "'");
+
+    if (rs.next()) {
+        lbl_p_name.setText(rs.getString("product_name"));
+        lbl_p_price.setText(rs.getString("price"));
+        lbl_p_id.setText(rs.getString("product_id")); 
+        
+        txt_qty.requestFocus(); // Moves cursor to Quantity field automatically
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Barcode not found!");
+        txt_barcode_search.setText("");
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
+    }//GEN-LAST:event_txt_barcode_searchActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+    // Get data from your labels/fields
+    String id = lbl_p_id.getText();
+    String name = lbl_p_name.getText();
+    Double price = Double.valueOf(lbl_p_price.getText());
+    Double qty = Double.valueOf(txt_qty.getText());
+    Double total = price * qty;
+
+    // Get the table model
+    javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    
+    // Add row: Product Name, Price, Qty, Total
+    java.util.Vector v = new java.util.Vector();
+    v.add(id);    // Hidden ID for database
+    v.add(name);  // Column 1
+    v.add(price); // Column 2
+    v.add(qty);   // Column 3
+    v.add(total); // Column 4
+    
+    dt.addRow(v);
+    
+    // Update the Grand Total label at the bottom
+    calculate_grand_total();
+    
+    // Clear search fields for the next item
+    txt_barcode_search.setText("");
+    lbl_p_name.setText("");
+    lbl_p_price.setText("");
+    txt_qty.setText("");
+    txt_barcode_search.requestFocus();
+    
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid quantity!");
+}
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        // TODO add your handling code here:
+        try {
+    javax.swing.table.DefaultTableModel dt = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    int row = jTable1.getSelectedRow();
+    dt.removeRow(row);
+    
+    // Recalculate total after deleting
+    calculate_grand_total();
+} catch (Exception e) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Please select a row in the table to delete!");
+}
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txt_paid_amountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_paid_amountKeyReleased
+        // TODO add your handling code here:
+        try {
+    Double total = Double.valueOf(lbl_grand_total.getText());
+    Double paid = Double.valueOf(txt_paid_amount.getText());
+    
+    Double bal = paid - total;
+    lbl_balance.setText(String.valueOf(bal));
+} catch (Exception e) {
+    lbl_balance.setText("0.00");
+}
+    }//GEN-LAST:event_txt_paid_amountKeyReleased
 
     /**
      * @param args the command line arguments
@@ -76,7 +260,39 @@ public class POS extends javax.swing.JFrame {
             }
         });
     }
+    
+   public void calculate_grand_total() {
+    Double total = 0.0;
+    int rows = jTable1.getRowCount();
+    
+    for (int i = 0; i < rows; i++) {
+        // Safe check: make sure the cell is not null
+        Object value = jTable1.getValueAt(i, 4);
+        
+        if (value != null) {
+            total += Double.valueOf(value.toString());
+        }
+    }
+    
+    lbl_grand_total.setText(String.valueOf(total));
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lbl_balance;
+    private javax.swing.JLabel lbl_grand_total;
+    private javax.swing.JLabel lbl_p_id;
+    private javax.swing.JLabel lbl_p_name;
+    private javax.swing.JLabel lbl_p_price;
+    private javax.swing.JTextField txt_barcode_search;
+    private javax.swing.JTextField txt_paid_amount;
+    private javax.swing.JTextField txt_qty;
     // End of variables declaration//GEN-END:variables
 }
